@@ -3,8 +3,57 @@
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="styles.css">
     </head>
+    
     <body>
-        <h1>Change or remove this page</h1>
+        <h1>CA1 API Description</h1><br>
+        <table class="tg">
+            <thead>
+                <tr>
+                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Method</span></th>
+                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">URL</span></th>
+                    <th class="tg-0lax"><span style="font-weight:bold">Request Body (JSON)</span></th>
+                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Response (JSON)</span></th>
+                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Error (e)</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GET</span>	</td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users</span></td>
+                    <td class="tg-0lax"></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">[user, user, ...](1)</span></td>
+                    <td class="tg-0lax"></td>
+                </tr>
+                <tr>
+                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GET</span>	</td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users/{id}   </span><br><span style="font-weight:400;font-style:italic;text-decoration:none;color:#000;background-color:transparent">Id: A user ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">            </span></td>
+                    <td class="tg-0lax"></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">user (1)</span></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">(e1)</span></td>
+                </tr>
+                <tr>
+                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">POST</span></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users</span></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">user(1) without id</span></td>
+                    <td class="tg-0lax"></td>
+                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">(e2)</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <h2>Request Body and Response Formats</h2>
+        <p>(1) User format (don’t provide ID, for POST)</p>
+        
+        <div class="jsonDiv">
+            <p>{</p>
+            <p> &emsp; "age": Number,</p>
+            <p> &emsp; "name": String,</p>
+            <p> &emsp; "gender": String [“male” | “Female”],</p>
+            <p> &emsp; "email": String (email)</p>
+            <p>}</p>
+        </div>
+
     </body>
 </html>
