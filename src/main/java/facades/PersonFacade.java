@@ -5,6 +5,7 @@
  */
 package facades;
 
+import dtos.PersonDTO;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
 import static facades.DatabaseFacade.getDatabaseFacade;
@@ -29,8 +30,8 @@ public class PersonFacade {
         return instance;
     }
     
-    public Person getPersonByPhoneNumber(String phoneNumber){
-        return dbFacade.getPersonByPhoneNumber(phoneNumber);
+    public PersonDTO getPersonByPhoneNumber(String phoneNumber){
+        return new PersonDTO(dbFacade.getPersonByPhoneNumber(phoneNumber));
     }
 
 }

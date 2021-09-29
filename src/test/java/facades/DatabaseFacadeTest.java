@@ -184,15 +184,7 @@ public class DatabaseFacadeTest {
         assertEquals(expected, result.getId());
     }
     
-    @Test
-    public void testMethod() {
-        PersonFacade pf = PersonFacade.getPersonFacade(emf);
-        Person person = pf.getPersonByPhoneNumber(p1.getPhones().get(0).getNumber());
-        int expected = p1.getId();
-        assertEquals(expected,person.getId());
-    }
-    
-    
+
 
  
 

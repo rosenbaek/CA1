@@ -25,7 +25,6 @@ public class ApplicationConfig extends Application {
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
         resources.add(rest.CorsFilter.class);
         resources.add(rest.PersonResource.class);
-        resources.add(rest.Test.class);
     }
     
 }
