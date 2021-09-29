@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -22,6 +23,7 @@ import javax.persistence.OneToMany;
  * @author mikke
  */
 @Entity
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
