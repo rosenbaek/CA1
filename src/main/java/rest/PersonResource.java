@@ -32,10 +32,11 @@ public class PersonResource {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
           
   
+    @Path("{phoneNumber}")
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
-    public Response getAllPersons() {
-        return Response.ok(gson.toJson(facade.getPersonByPhoneNumber("33333")), MediaType.APPLICATION_JSON).build();
+    public Response getPersonById(@PathParam("phoneNumber") String phoneNumber) {
+        return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
     
