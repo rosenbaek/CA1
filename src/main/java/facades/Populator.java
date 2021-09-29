@@ -77,7 +77,7 @@ public class Populator {
         System.out.println("ZIP-ADDRESS CHECK");
         System.out.println(p1.getAddress().getCityInfo().getZipCode());
         ci1.getAddresses().forEach(x->x.getPersons().forEach(y->System.out.println(y.getFirstName())));
-        
+    
     }
     
     public static void main(String[] args) {
