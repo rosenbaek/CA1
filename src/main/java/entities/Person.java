@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -36,6 +37,9 @@ public class Person implements Serializable {
     
     @OneToMany(mappedBy = "person",  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Phone> phones;
+    
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Address address;
 
     public Person() {
     }
@@ -68,11 +72,18 @@ public class Person implements Serializable {
             phone.setPerson(null);
         }
     }
-    
-    
 
-    
-    
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+        if(!address.getPersons().contains(this)){
+            //TODO: Make facade that checks if address is in DB and fetches it before just inserting a new one.
+            address.addPerson(this);
+        }
+    }
     
     
     public List<Hobby> getHobbies() {
@@ -93,6 +104,17 @@ public class Person implements Serializable {
             hobby.getPersons().remove(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Person{" + "id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + '}';
+    }
+
+    
+
+    
+    
+    
 
     
     
