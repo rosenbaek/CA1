@@ -7,11 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="devops-starter" />
+        <module name="CA1-backend" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CA1-backend" options="-endorseddirs &quot;C:\Users\mikke\OneDrive\Datamatiker\CPH Business\GitHub\sem3-flow-CA1\CA1-backend\target/endorsed&quot;" />
       <module name="devops-starter" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
     </option>
   </component>

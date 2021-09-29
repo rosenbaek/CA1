@@ -47,14 +47,14 @@ public class PersonResource {
         return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
-    @Path("/ByHobby/{hobby}")
+    @Path("/byHobby/{hobby}")
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) {
         return Response.ok(gson.toJson(facade.getPersonsByHobby(hobbyName)), MediaType.APPLICATION_JSON).build();
     }
     
-    @Path("/ByZip/{zip}")
+    @Path("/byZip/{zip}")
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getPersonsInZip(@PathParam("zip") String zip) {
