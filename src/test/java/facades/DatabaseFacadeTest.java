@@ -16,12 +16,16 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import errorhandling.PersonNotFoundException;
+import java.util.List;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +37,11 @@ public class DatabaseFacadeTest {
 
     private static EntityManagerFactory emf;
     private static DatabaseFacade facade;
+    private static Person p1,p2,p3;
+    private static Hobby hobby1,hobby2;
+    private static CityInfo ci1,ci2;
+    private static Phone phone1,phone2,phone3;
+    private static Address a1,a2;
 
    
 
@@ -49,22 +58,22 @@ public class DatabaseFacadeTest {
     public void setUp(){
         EntityManager em = emf.createEntityManager();
         try {
-            Hobby hobby1 = new Hobby("testHobby1", "http://XXX.com", "category1", "type1");
-            Hobby hobby2 = new Hobby("testHobby2", "http://XXX.com", "category2", "type2");
+            hobby1 = new Hobby("testHobby1", "http://XXX.com", "category1", "type1");
+            hobby2 = new Hobby("testHobby2", "http://XXX.com", "category2", "type2");
 
-            CityInfo ci1 = new CityInfo("1000", "by1000");
-            CityInfo ci2 = new CityInfo("2000", "by2000");
+            ci1 = new CityInfo("1000", "by1000");
+            ci2 = new CityInfo("2000", "by2000");
 
-            Person p1 = new Person("test@test.dk", "testFName", "testLname");
-            Person p2 = new Person("test2@test2.dk", "test2FName", "test2Lname");
-            Person p3 = new Person("test3@test3.dk", "test3FName", "test3Lname");
+            p1 = new Person("test@test.dk", "testFName", "testLname");
+            p2 = new Person("test2@test2.dk", "test2FName", "test2Lname");
+            p3 = new Person("test3@test3.dk", "test3FName", "test3Lname");
 
-            Phone phone1 = new Phone("11111111", "testDescription");
-            Phone phone2 = new Phone("222222", "test2Description");
-            Phone phone3 = new Phone("33333", "test3Description");
+            phone1 = new Phone("11111111", "testDescription");
+            phone2 = new Phone("222222", "test2Description");
+            phone3 = new Phone("33333", "test3Description");
 
-            Address a1 = new Address("testvej1", "mere info");
-            Address a2 = new Address("testvej2", "mere info");
+            a1 = new Address("testvej1", "mere info");
+            a2 = new Address("testvej2", "mere info");
 
             a1.setCityInfo(ci1);
             ci2.addAddress(a2);
@@ -103,11 +112,70 @@ public class DatabaseFacadeTest {
             em.close();
         }
     }
+
     
+
+    /**
+     * Test of addPerson method, of class DatabaseFacade.
+     */
     @Test
-    public void testTrue() {
-        assertEquals(true,true);
+    public void testAddPerson() {
+        System.out.println("createPerson");
+        Person newPerson = new Person("email","firstname","lastname");
+        newPerson = facade.addPerson(newPerson);
+        assertNotNull(newPerson.getId());
     }
+
+    /**
+     * Test of deletePerson method, of class DatabaseFacade.
+     */
+    @Test
+    public void testDeletePerson() throws Exception {
+        System.out.println("deletePerson");
+        facade.deletePerson(p1.getId());
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+            Person result = em.find(Person.class, p1.getId());
+        em.getTransaction().commit();
+        em.close();
+        assertNull(result);
+    }
+
+    /**
+     * Test of getPerson method, of class DatabaseFacade.
+     */
+    @Test
+    public void testGetPerson() throws Exception {
+        System.out.println("getPersonById");
+        Integer id = p1.getId();
+        Person expResult = p1;
+        Person result = facade.getPerson(id);
+        assertEquals(expResult.getId(), result.getId());
+    }
+
+    /**
+     * Test of getAllPersons method, of class DatabaseFacade.
+     */
+    @Test
+    public void testGetAllPersons() {
+        System.out.println("getAllPersons");
+        int expResult = 3;
+        List<Person> result = facade.getAllPersons();
+        assertEquals(expResult, result.size());
+    }
+
+    /**
+     * Test of editPerson method, of class DatabaseFacade.
+     */
+    @Test
+    public void testEditPerson() throws PersonNotFoundException {
+        System.out.println("updatePerson");
+        p1.setFirstName("Updated name");
+        Person result = facade.editPerson(p1);
+        assertEquals("Updated name", result.getFirstName());
+    }
+    
+    
 
  
 
