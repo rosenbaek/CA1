@@ -80,7 +80,6 @@ public class Person implements Serializable {
     public void setAddress(Address address) {
         this.address = address;
         if(!address.getPersons().contains(this)){
-            //TODO: Make facade that checks if address is in DB and fetches it before just inserting a new one.
             address.addPerson(this);
         }
     }

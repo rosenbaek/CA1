@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -31,6 +32,9 @@ public class Address implements Serializable {
     
     @OneToMany(mappedBy = "address")
     private List<Person> persons;
+    
+    @ManyToOne
+    private CityInfo cityInfo;
 
     public Address() {
     }
@@ -88,6 +92,21 @@ public class Address implements Serializable {
         this.additionalInfo = additionalInfo;
     }
 
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+        if(!cityInfo.getAddresses().contains(this)){
+            //TODO: Make facade that checks if address is in DB and fetches it before just inserting a new one.
+            cityInfo.addAddress(this);
+        }
+    }
+
+    
+    
+    
     @Override
     public String toString() {
         return "Address{" + "id=" + id + ", street=" + street + ", additionalInfo=" + additionalInfo + '}';

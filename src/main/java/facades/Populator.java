@@ -5,12 +5,13 @@
  */
 package facades;
 
-import dtos.RenameMeDTO;
+
 import entities.Address;
+import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
-import entities.RenameMe;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
@@ -27,6 +28,9 @@ public class Populator {
         Hobby hobby1 = em.find(Hobby.class,"Airsoft");
         Hobby hobby2 = em.find(Hobby.class,"Animation");
         
+        CityInfo ci1 = em.find(CityInfo.class, "0800");
+        CityInfo ci2 = em.find(CityInfo.class, "2765");
+        
         
         Person p1 = new Person("test@test.dk","testFName","testLname");
         Person p2 = new Person("test2@test2.dk","test2FName","test2Lname");
@@ -38,6 +42,9 @@ public class Populator {
         
         Address a1 = new Address("testvej1", "mere info");
         Address a2 = new Address("testvej2", "mere info");
+        
+        a1.setCityInfo(ci1);
+        ci2.addAddress(a2);
       
         p1.setAddress(a1);
         a2.addPerson(p2);
@@ -67,6 +74,10 @@ public class Populator {
         a1.getPersons().forEach(x -> System.out.println("persons from address A1 "+a1.getId()+"   ---   "+x));
         System.out.println(p2.getAddress());
        
+        System.out.println("ZIP-ADDRESS CHECK");
+        System.out.println(p1.getAddress().getCityInfo().getZipCode());
+        ci1.getAddresses().forEach(x->x.getPersons().forEach(y->System.out.println(y.getFirstName())));
+        
     }
     
     public static void main(String[] args) {
