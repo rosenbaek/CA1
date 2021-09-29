@@ -7,6 +7,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 
 import errorhandling.PersonNotFoundException;
@@ -32,18 +33,46 @@ public class PersonResource {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
           
   
-    @Path("/phoneNumber/{phoneNumber}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON}) 
+    public Response getPersonByPhoneNumber() {
+        return Response.ok(gson.toJson("WELCOME!"), MediaType.APPLICATION_JSON).build();
+    }
+    
+    
+    @Path("/byPhoneNumber/{phoneNumber}")
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
         return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
-    @Path("/hobby/{hobby}")
+    @Path("/ByHobby/{hobby}")
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
     public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) {
         return Response.ok(gson.toJson(facade.getPersonsByHobby(hobbyName)), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Path("/ByZip/{zip}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON}) 
+    public Response getPersonsInZip(@PathParam("zip") String zip) {
+        return Response.ok(gson.toJson(facade.getPersonsByZip(zip)), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Path("/hobbyCount/{hobby}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON}) 
+    public Response getPersonsCountByHobby(@PathParam("hobby") String hobby) {
+        return Response.ok(gson.toJson(facade.countPersonsWithAGivenHobby(hobby)), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Path("/zipList")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON}) 
+    public Response getAllZips() {
+        return Response.ok(gson.toJson(facade.getAllCityInfos()), MediaType.APPLICATION_JSON).build();
     }
     
     

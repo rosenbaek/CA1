@@ -5,11 +5,13 @@
  */
 package facades;
 
+import entities.CityInfo;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -110,6 +112,43 @@ public class DatabaseFacade {
             query.setParameter("hobbyName",hobbyName);
             persons = query.getResultList(); 
             return persons;
+        } finally{
+            em.close();
+        }
+    }
+    
+    public List<Person> getPersonsByZip(String zip){
+        EntityManager em = emf.createEntityManager();
+        List<Person> persons;
+        try{
+            TypedQuery<Person> query = em.createQuery("SELECT p from Person p inner join p.address a inner join a.cityInfo c where c.zipCode = :zip", Person.class);
+            query.setParameter("zip",zip);
+            persons = query.getResultList(); 
+            return persons;
+        } finally{
+            em.close();
+        }
+    }
+    
+    public int countPersonsWithAGivenHobby(String hobby){
+        EntityManager em = emf.createEntityManager();
+        try{
+            Query query = em.createQuery("SELECT COUNT(distinct p) from Person p INNER JOIN p.hobbies h where h.name = :hobbyName");
+            query.setParameter("hobbyName", hobby);
+            Long result = (Long) query.getSingleResult();
+            return result.intValue();
+        }finally{
+            em.close();
+        }
+    }
+    
+    public List<CityInfo> getAllCityInfos(){
+        EntityManager em = emf.createEntityManager();
+        List<CityInfo> cityInfos;
+        try{
+            TypedQuery<CityInfo> query = em.createQuery("SELECT ci from CityInfo ci", CityInfo.class);
+            cityInfos = query.getResultList(); 
+            return cityInfos;
         } finally{
             em.close();
         }

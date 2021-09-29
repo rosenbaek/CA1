@@ -195,6 +195,25 @@ public class DatabaseFacadeTest {
     }
  
 
-   
+    @Test
+    public void testgetPersonsByZip() {
+        System.out.println("testgetPersonsByZip");
+        int expected = 2;
+        List<Person> result = facade.getPersonsByZip(ci1.getZipCode());
+        assertEquals(expected, result.size());
+    }
 
+    @Test
+    public void testcountPersonsWithAGivenHobby() {
+        int expected = 2;
+        int actual = facade.countPersonsWithAGivenHobby(hobby1.getName());
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testgetAllCityInfos() {
+        int expected = 2;
+        List<CityInfo> cityInfos = facade.getAllCityInfos();
+        assertEquals(expected, cityInfos.size());
+    }
 }

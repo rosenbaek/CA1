@@ -5,11 +5,16 @@
  */
 package facades;
 
+import com.google.gson.JsonObject;
+import dtos.CityInfoDTO;
+import dtos.CityInfosDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import entities.CityInfo;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
 import static facades.DatabaseFacade.getDatabaseFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
@@ -38,5 +43,20 @@ public class PersonFacade {
 
     public PersonsDTO getPersonsByHobby(String hobbyName){
         return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));
+    }
+    
+    public PersonsDTO getPersonsByZip(String zip){
+        return new PersonsDTO(dbFacade.getPersonsByZip(zip));
+    }
+    
+    public JsonObject countPersonsWithAGivenHobby(String hobby){
+        JsonObject json = new JsonObject();
+        int amount = dbFacade.countPersonsWithAGivenHobby(hobby);
+        json.addProperty("amount", amount);
+        return json;
+    }
+    
+    public CityInfosDTO getAllCityInfos(){
+        return new CityInfosDTO(dbFacade.getAllCityInfos());
     }
 }
