@@ -24,17 +24,13 @@ public class PersonFacade {
     public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             instance = new PersonFacade();
-            
             dbFacade = getDatabaseFacade(_emf);
         }
         return instance;
     }
     
-    public Person getPersonByPhoneNumber(String phoneNumber) throws PersonNotFoundException {
-        EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
-        Person person = query.;
-        return new PersonsDTO(persons);
+    public Person getPersonByPhoneNumber(String phoneNumber){
+        return dbFacade.getPersonByPhoneNumber(phoneNumber);
     }
 
 }

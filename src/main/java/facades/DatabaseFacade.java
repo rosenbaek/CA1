@@ -89,8 +89,17 @@ public class DatabaseFacade {
         }
     }
 
-    Person getPersonByPhoneNumber(String phoneNumber) {
-        
+    public Person getPersonByPhoneNumber(String phoneNumber) {
+        EntityManager em = emf.createEntityManager();
+        try{
+            Person person;
+            TypedQuery<Person> query = em.createQuery("SELECT p from Person p INNER JOIN p.phones ph where ph.number = :phoneNumber",Person.class);
+            query.setParameter("phoneNumber", phoneNumber);
+            person = query.getSingleResult();
+            return person;
+        } finally{
+            em.close();
+        }
     }
 
 }

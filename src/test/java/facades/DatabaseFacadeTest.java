@@ -175,6 +175,23 @@ public class DatabaseFacadeTest {
         assertEquals("Updated name", result.getFirstName());
     }
     
+    @Test
+    public void testgetPersonByPhoneNumber() {
+        System.out.println("getPersonByPhoneNumber");
+        String phoneNumber = p1.getPhones().get(0).getNumber();
+        int expected = p1.getId();
+        Person result = facade.getPersonByPhoneNumber(phoneNumber);
+        assertEquals(expected, result.getId());
+    }
+    
+    @Test
+    public void testMethod() {
+        PersonFacade pf = PersonFacade.getPersonFacade(emf);
+        Person person = pf.getPersonByPhoneNumber(p1.getPhones().get(0).getNumber());
+        int expected = p1.getId();
+        assertEquals(expected,person.getId());
+    }
+    
     
 
  
