@@ -186,6 +186,13 @@ public class DatabaseFacadeTest {
     
 
 
+    @Test
+    public void testgetPersonsByHobby() {
+        System.out.println("testgetPersonsByHobby");
+        int expectedSize = 2;
+        List<Person> result = facade.getPersonsByHobby(hobby1.getName());
+        assertEquals(expectedSize, result.size());
+    }
  
 
    

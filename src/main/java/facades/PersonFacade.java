@@ -6,9 +6,11 @@
 package facades;
 
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
 import static facades.DatabaseFacade.getDatabaseFacade;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
@@ -34,4 +36,7 @@ public class PersonFacade {
         return new PersonDTO(dbFacade.getPersonByPhoneNumber(phoneNumber));
     }
 
+    public PersonsDTO getPersonsByHobby(String hobbyName){
+        return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));
+    }
 }

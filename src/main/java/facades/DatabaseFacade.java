@@ -101,5 +101,18 @@ public class DatabaseFacade {
             em.close();
         }
     }
+    
+    public List<Person> getPersonsByHobby(String hobbyName){
+        EntityManager em = emf.createEntityManager();
+        List<Person> persons;
+        try{
+            TypedQuery<Person> query = em.createQuery("SELECT p from Person p inner join p.hobbies h WHERE h.name = :hobbyName", Person.class);
+            query.setParameter("hobbyName",hobbyName);
+            persons = query.getResultList(); 
+            return persons;
+        } finally{
+            em.close();
+        }
+    }
 
 }
