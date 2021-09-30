@@ -65,16 +65,20 @@ public class PersonFacade {
         //convert to Person and address
         Person person = new Person(personDTO);
         Address address = new Address(personDTO.getAddress());
+        System.out.println("adddress" +address);
         try {
             //check if address exist
             address = dbFacade.getAddress(address);
         } catch (PersonNotFoundException e) {
             //if not exits create address
+            
         }
+        //If we persist person all at once, then the address will get the wrong id
+        dbFacade.addPerson(person);
         //Link address and person
         //Husk alle hobbies og phones
         person.setAddress(address);
         //Persist and return person
-        return new PersonDTO(dbFacade.addPerson(person));        
+        return new PersonDTO(dbFacade.editPerson(person));        
     }
 }

@@ -12,6 +12,7 @@ package facades;
 
 
 import dtos.AddressDTO;
+import dtos.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -38,6 +39,7 @@ public class DatabaseFacadeTest {
 
     private static EntityManagerFactory emf;
     private static DatabaseFacade facade;
+    private static PersonFacade personFacade;
     private static Person p1,p2,p3;
     private static Hobby hobby1,hobby2;
     private static CityInfo ci1,ci2;
@@ -50,6 +52,7 @@ public class DatabaseFacadeTest {
     public static void setUpClass() {
        emf = EMF_Creator.createEntityManagerFactoryForTest();
        facade = DatabaseFacade.getDatabaseFacade(emf);
+       personFacade = PersonFacade.getPersonFacade(emf);
     }
 
 
@@ -229,4 +232,17 @@ public class DatabaseFacadeTest {
         System.out.println(a6.toString());
         assertEquals(a1.getId(), newA.getId());
     }
+    
+    @Test
+    public void testAddPersonWithAddress() throws PersonNotFoundException {
+        Person person = new Person("email1", "firstname1", "lastname1");
+        Address a5 = new Address("testvej1", "mere info");
+        CityInfo ci6 = new CityInfo("1000", "by1000");
+        a5.setCityInfo(ci6);
+        person.setAddress(a5);
+        PersonDTO personDTO = new PersonDTO(person);
+        PersonDTO newDTO = personFacade.addPerson(personDTO);
+        assertEquals(a1.getId(), newDTO.getAddress().getId());
+    }
+   
 }
