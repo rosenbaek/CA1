@@ -11,6 +11,7 @@ package facades;
  */
 
 
+import dtos.AddressDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
@@ -218,10 +219,14 @@ public class DatabaseFacadeTest {
     }
     
     @Test
-    public void testGetAddress() throws PersonNotFoundException {
+    public void testGetAddress() throws PersonNotFoundException {      
         Address a5 = new Address("testvej1", "mere info");
         CityInfo ci6 = new CityInfo("1000", "by1000");
         a5.setCityInfo(ci6);
-        assertEquals(a1.getId(), facade.getAddress(a5).getId());
+        AddressDTO aDTO = new AddressDTO(a5);
+        Address a6 = new Address(aDTO);
+        Address newA = facade.getAddress(a6);
+        System.out.println(a6.toString());
+        assertEquals(a1.getId(), newA.getId());
     }
 }

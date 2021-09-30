@@ -22,7 +22,9 @@ public class AddressDTO {
     private String city;
 
     public AddressDTO(Address address) {
-        this.id = address.getId();
+        if (address.getId() != null) {
+            this.id = address.getId();
+        }
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
         this.zipCode = address.getCityInfo().getZipCode();
@@ -32,7 +34,6 @@ public class AddressDTO {
     public AddressDTO() {
     }
     
-
     public int getId() {
         return id;
     }

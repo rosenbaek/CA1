@@ -37,10 +37,10 @@ public class DatabaseFacade {
     public Address getAddress(Address address) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.additionalInfo = :aditionalInfo", Address.class);
+            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street", Address.class);
             query.setParameter("street", address.getStreet());
             //query.setParameter("cityInfoId", address.getCityInfo());
-            query.setParameter("aditionalInfo", address.getAdditionalInfo());
+            //query.setParameter("aditionalInfo", address.getAdditionalInfo());
             Address a = query.getSingleResult();
             return a;
         } catch (Exception e) {
