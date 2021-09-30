@@ -216,4 +216,12 @@ public class DatabaseFacadeTest {
         List<CityInfo> cityInfos = facade.getAllCityInfos();
         assertEquals(expected, cityInfos.size());
     }
+    
+    @Test
+    public void testGetAddress() throws PersonNotFoundException {
+        Address a5 = new Address("testvej1", "mere info");
+        CityInfo ci6 = new CityInfo("1000", "by1000");
+        a5.setCityInfo(ci6);
+        assertEquals(a1.getId(), facade.getAddress(a5).getId());
+    }
 }

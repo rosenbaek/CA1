@@ -42,6 +42,16 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

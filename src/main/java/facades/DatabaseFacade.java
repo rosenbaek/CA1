@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.Address;
 import entities.CityInfo;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
@@ -33,11 +34,28 @@ public class DatabaseFacade {
     private DatabaseFacade() {
     }
     
+    public Address getAddress(Address address) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Address> query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.additionalInfo = :aditionalInfo", Address.class);
+            query.setParameter("street", address.getStreet());
+            //query.setParameter("cityInfoId", address.getCityInfo());
+            query.setParameter("aditionalInfo", address.getAdditionalInfo());
+            Address a = query.getSingleResult();
+            return a;
+        } catch (Exception e) {
+            //TODO create addressNotFound Exception
+            throw new PersonNotFoundException("Address not found");
+        } finally {
+            em.close();
+        }  
+    }
+    
     public Person addPerson(Person person) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(person);
+            em.persist(person);     
             em.getTransaction().commit();
         } finally {
             em.close();

@@ -90,6 +90,22 @@ public class PersonResource {
     }
     
     
+    @Path("/addperson")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Add person",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                @ApiResponse(responseCode = "200", description = "The Requested Person"),
+                @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response addPerson(String person) throws PersonNotFoundException {
+        PersonDTO personDTO = gson.fromJson(person, PersonDTO.class);
+        return Response.ok(gson.toJson(facade.addPerson(personDTO)), MediaType.APPLICATION_JSON).build();
+    }
+    
     
     @Path("/byHobby/{hobby}")
     @GET

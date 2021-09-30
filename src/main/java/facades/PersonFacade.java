@@ -10,6 +10,7 @@ import dtos.CityInfoDTO;
 import dtos.CityInfosDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import entities.Address;
 import entities.CityInfo;
 import entities.Person;
 import errorhandling.PersonNotFoundException;
@@ -58,5 +59,22 @@ public class PersonFacade {
     
     public CityInfosDTO getAllCityInfos(){
         return new CityInfosDTO(dbFacade.getAllCityInfos());
+    }
+    
+    public PersonDTO addPerson(PersonDTO personDTO) throws PersonNotFoundException{
+        //convert to Person and address
+        Person person = new Person(personDTO);
+        Address address = new Address(personDTO.getAddress());
+        try {
+            //check if address exist
+            address = dbFacade.getAddress(address);
+        } catch (PersonNotFoundException e) {
+            //if not exits create address
+        }
+        //Link address and person
+        //Husk alle hobbies og phones
+        person.setAddress(address);
+        //Persist and return person
+        return new PersonDTO(dbFacade.addPerson(person));        
     }
 }
