@@ -176,7 +176,7 @@ public class DatabaseFacadeTest {
     }
     
     @Test
-    public void testgetPersonByPhoneNumber() {
+    public void testgetPersonByPhoneNumber() throws PersonNotFoundException {
         System.out.println("getPersonByPhoneNumber");
         String phoneNumber = p1.getPhones().get(0).getNumber();
         int expected = p1.getId();
@@ -187,7 +187,7 @@ public class DatabaseFacadeTest {
 
 
     @Test
-    public void testgetPersonsByHobby() {
+    public void testgetPersonsByHobby() throws PersonNotFoundException {
         System.out.println("testgetPersonsByHobby");
         int expectedSize = 2;
         List<Person> result = facade.getPersonsByHobby(hobby1.getName());

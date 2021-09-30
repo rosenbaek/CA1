@@ -7,6 +7,7 @@ package dtos;
 
 import entities.Hobby;
 import entities.Person;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
@@ -14,9 +15,13 @@ import java.util.List;
  * @author christianrosenbaek
  */
 public class PersonDTO {
+    @Schema(required = false, example = "2")
     private int id;
+    @Schema(required = true, example = "test@test.dk")
     private String email;
+    @Schema(required = true, example = "Chris")
     private String firstName;
+    @Schema(required = true, example = "Larsen")
     private String lastName;
     
     private AddressDTO address;

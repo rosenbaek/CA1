@@ -8,11 +8,22 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import dtos.CityInfoDTO;
+import dtos.PersonDTO;
 
 
 import errorhandling.PersonNotFoundException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,6 +35,30 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Christian og Mikkels API",
+                version = "0.1",
+                description = "CA1 projekt"
+        ),
+        tags = {
+            @Tag(name = "person", description = "Endpoints for person")
+
+        },
+        servers = {
+            @Server(
+                    description = "For Local host testing",
+                    url = "http://localhost:8080/dat3-startcode"
+            ),
+            @Server(
+                    description = "Server API",
+                    url = "https://itpiloten.dk"
+            )
+        }
+)
+
 
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("person")
@@ -42,44 +77,74 @@ public class PersonResource {
     
     @Path("/byPhoneNumber/{phoneNumber}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON}) 
-    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get person by phonenumber",
+        tags = {"person"},
+        responses = {
+            @ApiResponse(
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+            @ApiResponse(responseCode = "200", description = "The Requested Person"),
+            @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws PersonNotFoundException{
         return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
+    
+    
     @Path("/byHobby/{hobby}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON}) 
-    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get person by hobby",
+        tags = {"person"},
+        responses = {
+            @ApiResponse(
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+            @ApiResponse(responseCode = "200", description = "The Requested Person"),
+            @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) throws PersonNotFoundException{
         return Response.ok(gson.toJson(facade.getPersonsByHobby(hobbyName)), MediaType.APPLICATION_JSON).build();
     }
     
+    
     @Path("/byZip/{zip}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON}) 
-    public Response getPersonsInZip(@PathParam("zip") String zip) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get person by zipcode",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                @ApiResponse(responseCode = "200", description = "The Requested Person"),
+                @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response getPersonsInZip(@PathParam("zip") String zip) throws PersonNotFoundException{
         return Response.ok(gson.toJson(facade.getPersonsByZip(zip)), MediaType.APPLICATION_JSON).build();
     }
     
     @Path("/hobbyCount/{hobby}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON}) 
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get number of persons by hobby",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json"))})
     public Response getPersonsCountByHobby(@PathParam("hobby") String hobby) {
         return Response.ok(gson.toJson(facade.countPersonsWithAGivenHobby(hobby)), MediaType.APPLICATION_JSON).build();
     }
     
     @Path("/zipList")
     @GET
-    @Produces({MediaType.APPLICATION_JSON}) 
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get all zipcodes",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = CityInfoDTO.class)))})
     public Response getAllZips() {
         return Response.ok(gson.toJson(facade.getAllCityInfos()), MediaType.APPLICATION_JSON).build();
     }
     
-    
-    
-    
-    
-    
+
     
     
    

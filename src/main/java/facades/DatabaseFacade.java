@@ -91,26 +91,31 @@ public class DatabaseFacade {
         }
     }
 
-    public Person getPersonByPhoneNumber(String phoneNumber) {
+    public Person getPersonByPhoneNumber(String phoneNumber) throws PersonNotFoundException{
         EntityManager em = emf.createEntityManager();
+        Person person = null;
         try{
-            Person person;
             TypedQuery<Person> query = em.createQuery("SELECT p from Person p INNER JOIN p.phones ph where ph.number = :phoneNumber",Person.class);
             query.setParameter("phoneNumber", phoneNumber);
             person = query.getSingleResult();
-            return person;
+        } catch (Exception e) {
+            throw new PersonNotFoundException("No person with provided phonenumber found");
         } finally{
             em.close();
         }
+        return person;
     }
     
-    public List<Person> getPersonsByHobby(String hobbyName){
+    public List<Person> getPersonsByHobby(String hobbyName) throws PersonNotFoundException{
         EntityManager em = emf.createEntityManager();
         List<Person> persons;
         try{
             TypedQuery<Person> query = em.createQuery("SELECT p from Person p inner join p.hobbies h WHERE h.name = :hobbyName", Person.class);
             query.setParameter("hobbyName",hobbyName);
             persons = query.getResultList(); 
+            if (persons.size() == 0) {
+                throw new PersonNotFoundException("No persons with provided hobby found");
+            }
             return persons;
         } finally{
             em.close();

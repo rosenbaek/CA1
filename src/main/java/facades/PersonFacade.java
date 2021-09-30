@@ -37,11 +37,11 @@ public class PersonFacade {
         return instance;
     }
     
-    public PersonDTO getPersonByPhoneNumber(String phoneNumber){
+    public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws PersonNotFoundException{
         return new PersonDTO(dbFacade.getPersonByPhoneNumber(phoneNumber));
     }
 
-    public PersonsDTO getPersonsByHobby(String hobbyName){
+    public PersonsDTO getPersonsByHobby(String hobbyName) throws PersonNotFoundException{
         return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));
     }
     
