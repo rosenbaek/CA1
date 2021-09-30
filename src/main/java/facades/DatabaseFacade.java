@@ -122,13 +122,16 @@ public class DatabaseFacade {
         }
     }
     
-    public List<Person> getPersonsByZip(String zip){
+    public List<Person> getPersonsByZip(String zip) throws PersonNotFoundException{
         EntityManager em = emf.createEntityManager();
         List<Person> persons;
         try{
             TypedQuery<Person> query = em.createQuery("SELECT p from Person p inner join p.address a inner join a.cityInfo c where c.zipCode = :zip", Person.class);
             query.setParameter("zip",zip);
             persons = query.getResultList(); 
+            if (persons.size() == 0) {
+                throw new PersonNotFoundException("No persons with provided zipcode found");
+            }
             return persons;
         } finally{
             em.close();

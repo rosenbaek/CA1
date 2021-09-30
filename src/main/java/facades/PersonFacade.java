@@ -45,7 +45,7 @@ public class PersonFacade {
         return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));
     }
     
-    public PersonsDTO getPersonsByZip(String zip){
+    public PersonsDTO getPersonsByZip(String zip) throws PersonNotFoundException{
         return new PersonsDTO(dbFacade.getPersonsByZip(zip));
     }
     

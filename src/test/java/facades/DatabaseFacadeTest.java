@@ -196,7 +196,7 @@ public class DatabaseFacadeTest {
  
 
     @Test
-    public void testgetPersonsByZip() {
+    public void testgetPersonsByZip() throws PersonNotFoundException {
         System.out.println("testgetPersonsByZip");
         int expected = 2;
         List<Person> result = facade.getPersonsByZip(ci1.getZipCode());

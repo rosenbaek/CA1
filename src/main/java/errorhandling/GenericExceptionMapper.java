@@ -33,10 +33,15 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
         Response.StatusType type = getStatusType(ex);
         ExceptionDTO err;
-        if (ex instanceof WebApplicationException) {
+        
+        //Be aware to put instances in correct order of inheritance
+        if (ex instanceof PersonNotFoundException) {
+            err = new ExceptionDTO(404, ex.getMessage());
+        } else if (ex instanceof RuntimeException){
+            err = new ExceptionDTO(500, "Internal server problem. Sorry for the inconvenience!");
+        } else if(ex instanceof WebApplicationException) {
             err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
         } else {
-
             err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
         }
         return Response.status(type.getStatusCode())
