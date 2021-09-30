@@ -180,16 +180,37 @@ public class PersonResourceTest {
     }
     
     @Test
-    public void testGetPersonsByHobby2() {
-        String hobby = p1.getHobbies().get(0).getName();
-        String url = "person/byHobby/"+hobby;
+    public void testGetPersonsCountByHobby() {
+        String url = "person/hobbyCount/"+hobby1.getName();
         given()
                 .contentType("application/json")
                 .get(url).then()
                 .assertThat()
                 .statusCode(200)
-                .body("all", hasSize(4));
+                .body("amount", is(2));
     }
  
+    @Test
+    public void testGetPersonsInZip() {
+        String zipCode = p3.getAddress().getCityInfo().getZipCode();
+        String url = "person/byZip/" + zipCode;
+        given()
+                .contentType("application/json")
+                .get(url).then()
+                .assertThat()
+                .statusCode(200)
+                .body("all", hasSize(2));
+    }
+    
+    @Test
+    public void testGetZipList() {
+        String url = "person/zipList";
+        given()
+                .contentType("application/json")
+                .get(url).then()
+                .assertThat()
+                .statusCode(200)
+                .body("all", hasSize(2));
+    }
     
 }

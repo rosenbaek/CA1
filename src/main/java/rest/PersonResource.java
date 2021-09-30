@@ -35,7 +35,7 @@ public class PersonResource {
   
     @GET
     @Produces({MediaType.APPLICATION_JSON}) 
-    public Response getPersonByPhoneNumber() {
+    public Response getServerIsUp() {
         return Response.ok(gson.toJson("WELCOME!"), MediaType.APPLICATION_JSON).build();
     }
     
