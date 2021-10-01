@@ -78,7 +78,8 @@ public class DatabaseFacade {
             
             em.persist(person);
             List<Hobby> arr = new ArrayList<>();
-            arr = person.getHobbies();
+            arr.addAll(person.getHobbies());
+            person.getHobbies().clear();
             int arraySize = arr.size();
             for (int i = 0; i < arraySize; i++) {
                 Hobby hob = em.find(Hobby.class, arr.get(i).getName());            
@@ -86,8 +87,6 @@ public class DatabaseFacade {
                     throw new NotFoundException("One or more hobbies not in database");
                 }else {
                     person.addHobbies(hob);
-                    //TODO: look at smarter solution for cleaning array
-                    person.getHobbies().remove(i-1);
                 }
             }
             em.getTransaction().commit();
