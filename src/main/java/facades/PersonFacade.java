@@ -13,7 +13,7 @@ import dtos.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
 import entities.Person;
-import errorhandling.PersonNotFoundException;
+import errorhandling.NotFoundException;
 import static facades.DatabaseFacade.getDatabaseFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +38,15 @@ public class PersonFacade {
         return instance;
     }
     
-    public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws PersonNotFoundException{
+    public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws NotFoundException{
         return new PersonDTO(dbFacade.getPersonByPhoneNumber(phoneNumber));
     }
 
-    public PersonsDTO getPersonsByHobby(String hobbyName) throws PersonNotFoundException{
+    public PersonsDTO getPersonsByHobby(String hobbyName) throws NotFoundException{
         return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));
     }
     
-    public PersonsDTO getPersonsByZip(String zip) throws PersonNotFoundException{
+    public PersonsDTO getPersonsByZip(String zip) throws NotFoundException{
         return new PersonsDTO(dbFacade.getPersonsByZip(zip));
     }
     
@@ -61,7 +61,7 @@ public class PersonFacade {
         return new CityInfosDTO(dbFacade.getAllCityInfos());
     }
     
-    public PersonDTO addPerson(PersonDTO personDTO) throws PersonNotFoundException{
+    public PersonDTO addPerson(PersonDTO personDTO) throws NotFoundException{
         //convert to Person and address
         Person person = new Person(personDTO);
         Address address = new Address(personDTO.getAddress());
@@ -69,16 +69,23 @@ public class PersonFacade {
         try {
             //check if address exist
             address = dbFacade.getAddress(address);
-        } catch (PersonNotFoundException e) {
+        } catch (NotFoundException e) {
             //if not exits create address
             
         }
         //If we persist person all at once, then the address will get the wrong id
-        dbFacade.addPerson(person);
+        //dbFacade.addPerson(person);
         //Link address and person
         //Husk alle hobbies og phones
         person.setAddress(address);
         //Persist and return person
-        return new PersonDTO(dbFacade.editPerson(person));        
+        return new PersonDTO(dbFacade.addPerson(person));        
+    }
+    
+    public PersonDTO editPerson(PersonDTO personDTO){
+        Person person = new Person(personDTO);
+        person = dbFacade.editPerson(person);
+        PersonDTO newDTO = new PersonDTO(person);
+        return newDTO;
     }
 }

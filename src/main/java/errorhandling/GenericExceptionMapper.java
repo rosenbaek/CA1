@@ -35,7 +35,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         ExceptionDTO err;
         
         //Be aware to put instances in correct order of inheritance
-        if (ex instanceof PersonNotFoundException) {
+        if (ex instanceof NotFoundException) {
             err = new ExceptionDTO(404, ex.getMessage());
         } else if (ex instanceof RuntimeException){
             err = new ExceptionDTO(500, "Internal server problem. Sorry for the inconvenience!");

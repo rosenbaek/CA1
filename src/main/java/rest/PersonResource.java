@@ -12,7 +12,7 @@ import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 
 
-import errorhandling.PersonNotFoundException;
+import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -85,7 +85,7 @@ public class PersonResource {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
             @ApiResponse(responseCode = "200", description = "The Requested Person"),
             @ApiResponse(responseCode = "400", description = "Entity not found")})
-    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws PersonNotFoundException{
+    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws NotFoundException{
         return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
@@ -101,7 +101,7 @@ public class PersonResource {
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The Requested Person"),
                 @ApiResponse(responseCode = "400", description = "Entity not found")})
-    public Response addPerson(String person) throws PersonNotFoundException {
+    public Response addPerson(String person) throws NotFoundException {
         PersonDTO personDTO = gson.fromJson(person, PersonDTO.class);
         return Response.ok(gson.toJson(facade.addPerson(personDTO)), MediaType.APPLICATION_JSON).build();
     }
@@ -117,7 +117,7 @@ public class PersonResource {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
             @ApiResponse(responseCode = "200", description = "The Requested Person"),
             @ApiResponse(responseCode = "400", description = "Entity not found")})
-    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) throws PersonNotFoundException{
+    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) throws NotFoundException{
         return Response.ok(gson.toJson(facade.getPersonsByHobby(hobbyName)), MediaType.APPLICATION_JSON).build();
     }
     
@@ -132,7 +132,7 @@ public class PersonResource {
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The Requested Person"),
                 @ApiResponse(responseCode = "400", description = "Entity not found")})
-    public Response getPersonsInZip(@PathParam("zip") String zip) throws PersonNotFoundException{
+    public Response getPersonsInZip(@PathParam("zip") String zip) throws NotFoundException{
         return Response.ok(gson.toJson(facade.getPersonsByZip(zip)), MediaType.APPLICATION_JSON).build();
     }
     

@@ -9,6 +9,7 @@ import dtos.AddressDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -120,6 +121,47 @@ public class Address implements Serializable {
     @Override
     public String toString() {
         return "Address{" + "id=" + id + ", street=" + street + ", additionalInfo=" + additionalInfo + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.street);
+        hash = 97 * hash + Objects.hashCode(this.additionalInfo);
+        hash = 97 * hash + Objects.hashCode(this.persons);
+        hash = 97 * hash + Objects.hashCode(this.cityInfo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Address other = (Address) obj;
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        if (!Objects.equals(this.additionalInfo, other.additionalInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.persons, other.persons)) {
+            return false;
+        }
+        if (!Objects.equals(this.cityInfo, other.cityInfo)) {
+            return false;
+        }
+        return true;
     }
 
    

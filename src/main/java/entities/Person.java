@@ -9,6 +9,7 @@ import dtos.PersonDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +39,7 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     
-    @ManyToMany(mappedBy = "persons",  cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "persons")
     private List<Hobby> hobbies;
     
     @OneToMany(mappedBy = "person",  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -63,12 +64,14 @@ public class Person implements Serializable {
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
         this.hobbies = new ArrayList<>();
-        this.phones = new ArrayList<>();
+        this.phones = Phone.getPhones(personDTO.getPhones());
     }
 
     public List<Phone> getPhones() {
         return phones;
     }
+    
+    
 
     public void addPhone(Phone phone) {
         if (phone != null){
@@ -121,6 +124,55 @@ public class Person implements Serializable {
     @Override
     public String toString() {
         return "Person{" + "id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        hash = 19 * hash + Objects.hashCode(this.email);
+        hash = 19 * hash + Objects.hashCode(this.firstName);
+        hash = 19 * hash + Objects.hashCode(this.lastName);
+        hash = 19 * hash + Objects.hashCode(this.hobbies);
+        hash = 19 * hash + Objects.hashCode(this.phones);
+        hash = 19 * hash + Objects.hashCode(this.address);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Person other = (Person) obj;
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.hobbies, other.hobbies)) {
+            return false;
+        }
+        if (!Objects.equals(this.phones, other.phones)) {
+            return false;
+        }
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        return true;
     }
 
     

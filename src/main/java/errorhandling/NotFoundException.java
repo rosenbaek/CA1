@@ -9,9 +9,9 @@ package errorhandling;
  *
  * @author mikke
  */
-public class PersonNotFoundException extends Exception{
+public class NotFoundException extends Exception{
 
-    public PersonNotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
     
