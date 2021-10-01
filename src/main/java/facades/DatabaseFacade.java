@@ -81,14 +81,14 @@ public class DatabaseFacade {
             arr = person.getHobbies();
             int arraySize = arr.size();
             for (int i = 0; i < arraySize; i++) {
-                Hobby hob = em.find(Hobby.class, arr.get(i).getName());
-                arr.remove(i);
+                Hobby hob = em.find(Hobby.class, arr.get(i).getName());            
                 if (hob == null) {
                     throw new NotFoundException("One or more hobbies not in database");
                 }else {
                     person.addHobbies(hob);
+                    //TODO: look at smarter solution for cleaning array
+                    person.getHobbies().remove(i-1);
                 }
-                
             }
             em.getTransaction().commit();
         } catch(RollbackException e){
