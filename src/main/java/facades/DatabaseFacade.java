@@ -71,25 +71,25 @@ public class DatabaseFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            Address address = new Address();
             if(person.getAddress().getId() != null){
-                address = em.find(Address.class, person.getAddress().getId());
+                Address address = em.find(Address.class, person.getAddress().getId());
                 person.setAddress(address);
             }
             
             em.persist(person);
-            //List<Hobby> arr = new ArrayList<>();
-            //arr = person.getHobbies();
-            
-//            for (int i = 0; i < arr.size(); i++) {
-//                Hobby hob = em.find(Hobby.class, arr.get(i).getName());
-//                if (hob == null) {
-//                    throw new NotFoundException("One or more hobbies not in database");
-//                }else {
-//                    person.addHobbies(hob);
-//                }
-//                
-//            }
+            List<Hobby> arr = new ArrayList<>();
+            arr = person.getHobbies();
+            int arraySize = arr.size();
+            for (int i = 0; i < arraySize; i++) {
+                Hobby hob = em.find(Hobby.class, arr.get(i).getName());
+                arr.remove(i);
+                if (hob == null) {
+                    throw new NotFoundException("One or more hobbies not in database");
+                }else {
+                    person.addHobbies(hob);
+                }
+                
+            }
             em.getTransaction().commit();
         } catch(RollbackException e){
             System.out.println("FAIIIIIIL =  "+e.getMessage());
