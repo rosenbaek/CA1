@@ -69,9 +69,6 @@ public class PersonFacade {
         Address address = new Address(personDTO.getAddress());
         System.out.println("adddress" +address);
 
-        for (HobbyDTO hobby : personDTO.getHobbies()) {
-            person.addHobbies(new Hobby(hobby));
-        }
         
         try {
             //check if address exist
