@@ -11,6 +11,7 @@ import entities.Hobby;
 import entities.Person;
 import errorhandling.NotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -70,10 +71,27 @@ public class DatabaseFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
+            Address address = em.find(Address.class, person.getAddress().getId());
+            if (address != null) {
+                person.setAddress(address);
+            }
+            List<Hobby> arr = new ArrayList<>();
+            arr = person.getHobbies();
+            
+            for (int i = 0; i < arr.size(); i++) {
+                Hobby hob = em.find(Hobby.class, arr.get(i).getName());
+                if (hob == null) {
+                    throw new NotFoundException("One or more hobbies not in database");
+                }else {
+                    person.addHobbies(hob);
+                }
+                
+            }
+
             em.persist(person);
             em.getTransaction().commit();
         } catch(RollbackException e){
-            System.out.println("FAIIIIIIL =  "+e.getCause().getLocalizedMessage());
+            System.out.println("FAIIIIIIL =  "+e.getMessage());
             //throw new PersonNotFoundException("Phone already exist");
             for (Throwable t = e.getCause(); t != null; t = t.getCause()) {
                 System.out.println("Exception:" + t);

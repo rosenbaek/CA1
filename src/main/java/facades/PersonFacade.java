@@ -70,8 +70,9 @@ public class PersonFacade {
         System.out.println("adddress" +address);
 
         for (HobbyDTO hobby : personDTO.getHobbies()) {
-            person.addHobbies(dbFacade.getHobby(new Hobby(hobby)));
+            person.addHobbies(new Hobby(hobby));
         }
+        
         try {
             //check if address exist
             address = dbFacade.getAddress(address);
@@ -79,8 +80,7 @@ public class PersonFacade {
             //if not exits create address
             
         }
-        //If we persist person all at once, then the address will get the wrong id
-        //dbFacade.addPerson(person);
+
         //Link address and person
         //Husk alle hobbies og phones
         person.setAddress(address);
