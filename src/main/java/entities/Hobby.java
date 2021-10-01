@@ -5,6 +5,8 @@
  */
 package entities;
 
+import dtos.HobbyDTO;
+import dtos.PhoneDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +51,25 @@ public class Hobby implements Serializable {
         this.type = type;
         this.persons = new ArrayList<>();
     }
+    
+    public Hobby(HobbyDTO hobbyDTO) {
+        this.name = hobbyDTO.getName();
+        this.wikiLink = hobbyDTO.getWikiLink();
+        this.category = hobbyDTO.getCategory();
+        this.type = hobbyDTO.getType();
+        this.persons = new ArrayList<>();
+    }
 
     public List<Person> getPersons() {
         return persons;
     }
 
+    public static List<Hobby> getHobbies(List<HobbyDTO> _hobbies) {
+        List<Hobby> hobbies = new ArrayList();
+        _hobbies.forEach(hobbiesDTO -> hobbies.add(new Hobby(hobbiesDTO)));
+        return hobbies;
+    }
+    
     public void setPersons(List<Person> persons) {
         this.persons = persons;
     }

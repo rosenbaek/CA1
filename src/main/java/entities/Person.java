@@ -63,7 +63,7 @@ public class Person implements Serializable {
         this.email = personDTO.getEmail();
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
-        this.hobbies = new ArrayList<>();
+        this.hobbies = Hobby.getHobbies(personDTO.getHobbies());
         this.phones = Phone.getPhones(personDTO.getPhones());
     }
 

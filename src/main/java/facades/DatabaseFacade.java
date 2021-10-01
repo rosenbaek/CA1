@@ -7,6 +7,7 @@ package facades;
 
 import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import errorhandling.NotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -53,6 +54,15 @@ public class DatabaseFacade {
         } finally {
             em.close();
         }  
+    }
+    
+    public Hobby getHobby(Hobby hobby) throws NotFoundException{
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Hobby.class, hobby.getName());
+        } catch (Exception e) {
+            throw new NotFoundException("Hobby not found");
+        }
     }
     
     public Person addPerson(Person person)throws PersistenceException, NotFoundException{

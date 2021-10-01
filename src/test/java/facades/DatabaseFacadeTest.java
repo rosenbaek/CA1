@@ -24,6 +24,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -124,7 +125,7 @@ public class DatabaseFacadeTest {
      * Test of addPerson method, of class DatabaseFacade.
      */
     @Test
-    public void testAddPerson() {
+    public void testAddPerson() throws PersistenceException, NotFoundException {
         System.out.println("createPerson");
         Person newPerson = new Person("email","firstname","lastname");
         newPerson = facade.addPerson(newPerson);

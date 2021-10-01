@@ -8,10 +8,12 @@ package facades;
 import com.google.gson.JsonObject;
 import dtos.CityInfoDTO;
 import dtos.CityInfosDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import entities.Address;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import errorhandling.NotFoundException;
 import static facades.DatabaseFacade.getDatabaseFacade;
@@ -66,6 +68,10 @@ public class PersonFacade {
         Person person = new Person(personDTO);
         Address address = new Address(personDTO.getAddress());
         System.out.println("adddress" +address);
+
+        for (HobbyDTO hobby : personDTO.getHobbies()) {
+            person.addHobbies(dbFacade.getHobby(new Hobby(hobby)));
+        }
         try {
             //check if address exist
             address = dbFacade.getAddress(address);
