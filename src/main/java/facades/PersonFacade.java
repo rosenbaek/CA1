@@ -85,7 +85,7 @@ public class PersonFacade {
         return new PersonDTO(dbFacade.addPerson(person));        
     }
     
-    public PersonDTO editPerson(PersonDTO personDTO){
+    public PersonDTO editPerson(PersonDTO personDTO) throws NotFoundException{
         Person person = new Person(personDTO);
         person = dbFacade.editPerson(person);
         PersonDTO newDTO = new PersonDTO(person);

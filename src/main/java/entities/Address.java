@@ -50,6 +50,7 @@ public class Address implements Serializable {
     }
     
     public Address(AddressDTO addressDTO) {
+        this.id = addressDTO.getId();
         this.street = addressDTO.getStreet();
         this.additionalInfo = addressDTO.getAdditionalInfo();
         this.cityInfo = new CityInfo(addressDTO.getZipCode(), addressDTO.getCity());
@@ -61,6 +62,10 @@ public class Address implements Serializable {
         return persons;
     }
 
+    public static Address getAddress(AddressDTO dto) {
+        return new Address(dto);
+    }
+    
     public void addPerson(Person person) {
         if (person != null){
             this.persons.add(person);

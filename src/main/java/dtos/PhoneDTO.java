@@ -20,8 +20,10 @@ public class PhoneDTO {
     private String description;
 
     public PhoneDTO(Phone phone) {
+        if (phone.getId() != null) {
+            this.id = phone.getId();
+        }
         this.number = phone.getNumber();
-        this.id = phone.getId();
         this.description = phone.getDescription();
     }
     

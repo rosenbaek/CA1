@@ -13,9 +13,11 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -42,10 +44,10 @@ public class Person implements Serializable {
     @ManyToMany(mappedBy = "persons")
     private List<Hobby> hobbies;
     
-    @OneToMany(mappedBy = "person",  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "person",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Phone> phones;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Address address;
 
     public Person() {
@@ -59,12 +61,18 @@ public class Person implements Serializable {
         this.phones = new ArrayList<>();
     }
     
+    
+    
     public Person(PersonDTO personDTO) {
+        this.id = personDTO.getId();
         this.email = personDTO.getEmail();
         this.firstName = personDTO.getFirstName();
         this.lastName = personDTO.getLastName();
         this.hobbies = Hobby.getHobbies(personDTO.getHobbies());
         this.phones = Phone.getPhones(personDTO.getPhones());
+        if (personDTO.getAddress() != null) {
+            this.address = Address.getAddress(personDTO.getAddress());
+        }
     }
 
     public List<Phone> getPhones() {
@@ -126,18 +134,10 @@ public class Person implements Serializable {
         return "Person{" + "id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + '}';
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + Objects.hashCode(this.id);
-        hash = 19 * hash + Objects.hashCode(this.email);
-        hash = 19 * hash + Objects.hashCode(this.firstName);
-        hash = 19 * hash + Objects.hashCode(this.lastName);
-        hash = 19 * hash + Objects.hashCode(this.hobbies);
-        hash = 19 * hash + Objects.hashCode(this.phones);
-        hash = 19 * hash + Objects.hashCode(this.address);
-        return hash;
-    }
+ 
+
+
+
 
     @Override
     public boolean equals(Object obj) {

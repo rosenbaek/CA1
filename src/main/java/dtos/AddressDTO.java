@@ -34,6 +34,8 @@ public class AddressDTO {
     public AddressDTO() {
     }
     
+    
+    
     public Integer getId() {
         return id;
     }

@@ -71,22 +71,28 @@ public class DatabaseFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            if(person.getAddress().getId() != null){
+            try {
+                if(person.getAddress().getId() != null){
                 Address address = em.find(Address.class, person.getAddress().getId());
                 person.setAddress(address);
+                }
+            } catch (Exception e) {
             }
             
+            
             em.persist(person);
-            List<Hobby> arr = new ArrayList<>();
-            arr.addAll(person.getHobbies());
-            person.getHobbies().clear();
-            int arraySize = arr.size();
-            for (int i = 0; i < arraySize; i++) {
-                Hobby hob = em.find(Hobby.class, arr.get(i).getName());            
-                if (hob == null) {
-                    throw new NotFoundException("One or more hobbies not in database");
-                }else {
-                    person.addHobbies(hob);
+            if (person.getHobbies().size() > 0) {
+                List<Hobby> arr = new ArrayList<>();
+                arr.addAll(person.getHobbies());
+                person.getHobbies().clear();
+                int arraySize = arr.size();
+                for (int i = 0; i < arraySize; i++) {
+                    Hobby hob = em.find(Hobby.class, arr.get(i).getName());
+                    if (hob == null) {
+                        throw new NotFoundException("One or more hobbies not in database");
+                    } else {
+                        person.addHobbies(hob);
+                    }
                 }
             }
             em.getTransaction().commit();
@@ -121,6 +127,8 @@ public class DatabaseFacade {
             }
             em.remove(person);
             em.getTransaction().commit();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         } finally {
             em.close();
         }
@@ -144,16 +152,25 @@ public class DatabaseFacade {
         return persons;
     }
     
-    public Person editPerson(Person person) {
+    public Person editPerson(Person person) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
+            Person p =em.find(Person.class, person.getId());
+            if (p != null) {
+                p = person;
+            }
             em.getTransaction().begin();
+            
             em.merge(person);
+            
             em.getTransaction().commit();
-            return person;
-        } finally {
+            
+        } catch(Exception e){
+            e.getMessage();
+        }finally {
             em.close();
         }
+        return person;
     }
 
     public Person getPersonByPhoneNumber(String phoneNumber) throws NotFoundException{

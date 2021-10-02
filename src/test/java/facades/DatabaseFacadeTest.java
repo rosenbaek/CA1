@@ -25,6 +25,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
+import org.junit.jupiter.api.Assertions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,14 +37,14 @@ import org.junit.jupiter.api.Test;
 
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class DatabaseFacadeTest {
 
     private static EntityManagerFactory emf;
     private static DatabaseFacade facade;
     private static PersonFacade personFacade;
     private static Person p1,p2,p3;
-    private static Hobby hobby1,hobby2;
+    private static Hobby hobby1,hobby2, hobby3;
     private static CityInfo ci1,ci2;
     private static Phone phone1,phone2,phone3;
     private static Address a1,a2;
@@ -66,6 +67,7 @@ public class DatabaseFacadeTest {
         try {
             hobby1 = new Hobby("testHobby1", "http://XXX.com", "category1", "type1");
             hobby2 = new Hobby("testHobby2", "http://XXX.com", "category2", "type2");
+            hobby3 = new Hobby("testHobby3", "http://XXX.com", "category3", "type3");
 
             ci1 = new CityInfo("1000", "by1000");
             ci2 = new CityInfo("2000", "by2000");
@@ -138,13 +140,9 @@ public class DatabaseFacadeTest {
     @Test
     public void testDeletePerson() throws Exception {
         System.out.println("deletePerson");
-        facade.deletePerson(p1.getId());
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-            Person result = em.find(Person.class, p1.getId());
-        em.getTransaction().commit();
-        em.close();
-        assertNull(result);
+        int id = p1.getId();
+        facade.deletePerson(id);
+        Assertions.assertThrows(NotFoundException.class,() -> facade.getPerson(id));
     }
 
     /**
@@ -178,7 +176,7 @@ public class DatabaseFacadeTest {
         System.out.println("updatePerson");
         p1.setFirstName("Updated name");
         Person result = facade.editPerson(p1);
-        assertEquals("Updated name", result.getFirstName());
+        assertEquals(p1.getFirstName(), result.getFirstName());
     }
     
     @Test
@@ -235,7 +233,7 @@ public class DatabaseFacadeTest {
         assertEquals(a1.getId(), newA.getId());
     }
     
-    //@Test
+    @Test
     public void testAddPersonWithAddress() throws NotFoundException {
         Person person = new Person("email1", "firstname1", "lastname1");
         Address a5 = new Address("testvej1", "mere info");
@@ -251,13 +249,49 @@ public class DatabaseFacadeTest {
         assertEquals(a1.getId(), newDTO.getAddress().getId());
     }
     
-    //@Test
-    public void testEditPerson1() {
+    @Test
+    public void testEditPerson1() throws NotFoundException {
         PersonDTO personDTO = new PersonDTO(p1);
-        personDTO.setFirstName("testtttt");
+        String newName = "New Name";
+        personDTO.setFirstName(newName);
         personDTO = personFacade.editPerson(personDTO);
         Person person = new Person(personDTO);
-        assertEquals(p1.getFirstName(), person.getFirstName());
+        assertEquals(newName, person.getFirstName());
+    }
+    
+    @Test
+    public void testEditHobbies() throws NotFoundException {
+        p1.removeHobby(hobby1);
+        p1.removeHobby(hobby2);
+        p1.addHobbies(hobby3);
+        PersonDTO personDTO = new PersonDTO(p1);
+        personDTO = personFacade.editPerson(personDTO);
+        Person person = new Person(personDTO);
+        assertEquals(1, person.getHobbies().size());
+    }
+    
+    @Test
+    public void testEditPhones() throws NotFoundException {
+        Phone phone4 = new Phone("4444", "test4Description");
+        p1.removePhone(phone1);
+        p1.removePhone(phone2);
+        p1.addPhone(phone4);
+        PersonDTO personDTO = new PersonDTO(p1);
+        personDTO = personFacade.editPerson(personDTO);
+        Person person = new Person(personDTO);
+        assertEquals(1, person.getPhones().size());
+    }
+    
+    @Test
+    public void testEditAddress() throws NotFoundException {
+        Address a4 = new Address("testvej4", "mere info4");
+        a4.setCityInfo(ci1);
+        p1.setAddress(a4);
+        
+        PersonDTO personDTO = new PersonDTO(p1);
+        personDTO = personFacade.editPerson(personDTO);
+        Person person = new Person(personDTO);
+        assertEquals(a4.getStreet(), person.getAddress().getStreet());
     }
    
 }

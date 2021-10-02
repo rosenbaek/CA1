@@ -36,7 +36,9 @@ public class PersonDTO {
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.address = new AddressDTO(person.getAddress());
+        if (person.getAddress() != null) {
+            this.address = new AddressDTO(person.getAddress());
+        }
         this.phones = PhoneDTO.getDtos(person.getPhones());
         this.hobbies = HobbyDTO.getDtos(person.getHobbies());
     }
