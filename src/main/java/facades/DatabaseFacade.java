@@ -159,10 +159,12 @@ public class DatabaseFacade {
             if (p != null) {
                 p = person;
             }
+            Address a = em.find(Address.class, person.getAddress().getId());
+            
             em.getTransaction().begin();
-            
+            a.setStreet(person.getAddress().getStreet());
             em.merge(person);
-            
+            em.merge(a);
             em.getTransaction().commit();
             
         } catch(Exception e){

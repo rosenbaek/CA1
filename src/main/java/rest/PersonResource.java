@@ -89,6 +89,20 @@ public class PersonResource {
         return Response.ok(gson.toJson(facade.getPersonByPhoneNumber(phoneNumber)), MediaType.APPLICATION_JSON).build();
     }
     
+    @Path("/{id}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get person by id",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                @ApiResponse(responseCode = "200", description = "The Requested Person"),
+                @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response getPersonByPhoneNumber(@PathParam("id") int id) throws NotFoundException {
+        return Response.ok(gson.toJson(facade.getPersonById(id)), MediaType.APPLICATION_JSON).build();
+    }
+    
     
     @Path("/addperson")
     @POST
@@ -104,6 +118,22 @@ public class PersonResource {
     public Response addPerson(String person) throws NotFoundException {
         PersonDTO personDTO = gson.fromJson(person, PersonDTO.class);
         return Response.ok(gson.toJson(facade.addPerson(personDTO)), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Path("/editperson")
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Edit person",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                @ApiResponse(responseCode = "200", description = "The Requested Person"),
+                @ApiResponse(responseCode = "400", description = "Entity not found")})
+    public Response editPerson(String person) throws NotFoundException {
+        PersonDTO personDTO = gson.fromJson(person, PersonDTO.class);
+        return Response.ok(gson.toJson(facade.editPerson(personDTO)), MediaType.APPLICATION_JSON).build();
     }
     
     

@@ -43,6 +43,10 @@ public class PersonFacade {
     public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws NotFoundException{
         return new PersonDTO(dbFacade.getPersonByPhoneNumber(phoneNumber));
     }
+    
+    public PersonDTO getPersonById(int id) throws NotFoundException {
+        return new PersonDTO(dbFacade.getPerson(id));
+    }
 
     public PersonsDTO getPersonsByHobby(String hobbyName) throws NotFoundException{
         return new PersonsDTO(dbFacade.getPersonsByHobby(hobbyName));

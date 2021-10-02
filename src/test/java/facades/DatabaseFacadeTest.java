@@ -287,7 +287,6 @@ public class DatabaseFacadeTest {
         Address a4 = new Address("testvej4", "mere info4");
         a4.setCityInfo(ci1);
         p1.setAddress(a4);
-        
         PersonDTO personDTO = new PersonDTO(p1);
         personDTO = personFacade.editPerson(personDTO);
         Person person = new Person(personDTO);
