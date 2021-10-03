@@ -47,7 +47,7 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Phone> phones;
     
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Address address;
 
     public Person() {
@@ -107,7 +107,7 @@ public class Person implements Serializable {
         if(!address.getPersons().contains(this)){
             address.addPerson(this);
         }
-    }
+        }
     
     
     public List<Hobby> getHobbies() {
@@ -163,15 +163,7 @@ public class Person implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.hobbies, other.hobbies)) {
-            return false;
-        }
-        if (!Objects.equals(this.phones, other.phones)) {
-            return false;
-        }
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
+       
         return true;
     }
 

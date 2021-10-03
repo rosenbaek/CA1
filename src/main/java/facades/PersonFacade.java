@@ -91,6 +91,16 @@ public class PersonFacade {
     
     public PersonDTO editPerson(PersonDTO personDTO) throws NotFoundException{
         Person person = new Person(personDTO);
+        Address address = new Address(personDTO.getAddress());
+        try {
+            //check if address exist
+            address = dbFacade.getAddress(address);
+        } catch (NotFoundException e) {
+            //if not exits create address
+
+        }
+        person.setAddress(address);
+        
         person = dbFacade.editPerson(person);
         PersonDTO newDTO = new PersonDTO(person);
         return newDTO;

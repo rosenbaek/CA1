@@ -9,10 +9,13 @@ import entities.Address;
 import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 import errorhandling.NotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
@@ -63,6 +66,21 @@ public class DatabaseFacade {
             return em.find(Hobby.class, hobby.getName());
         } catch (Exception e) {
             throw new NotFoundException("Hobby not found");
+        }
+    }
+    
+    public Phone getPhone(Phone phone){
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :number", Phone.class);
+            query.setParameter("number", phone.getNumber());
+            Phone p = query.getSingleResult();
+            return p;
+        } catch (Exception e) {
+            //TODO create addressNotFound Exception
+            return null;
+        } finally {
+            em.close();
         }
     }
     
@@ -155,20 +173,83 @@ public class DatabaseFacade {
     public Person editPerson(Person person) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
-            Person p =em.find(Person.class, person.getId());
+            Person p = em.find(Person.class, person.getId());
+            int size = p.getPhones().size();
+            List<Phone> phones = new ArrayList<>();
+            phones.addAll(p.getPhones());
             if (p != null) {
-                p = person;
+                
+                
+//                try {
+//                    Address a = getAddress(person.getAddress());
+//                    p.setAddress(a);
+//                } catch (Exception e) {
+//                    //If by mistake sent id, then remove it to create a new entity
+//                    person.getAddress().setId(null);
+//                    p.setAddress(person.getAddress());
+//                }
+                //Create list to avoid ConcurrentModificationException
+                
+                if (size > 0) {
+                    
+                    phones.forEach(phone -> p.removePhone(phone));
+                }
+                Phone pw = new Phone(); //Created a lambda does not allow to throw exception 
+                person.getPhones().forEach(newPhone -> {
+                    Phone phone = getPhone(newPhone);
+                    if (phone == null) {
+                        p.addPhone(newPhone);
+                    } else if (phone.getPerson().getId() == p.getId()) {
+                        p.addPhone(phone);
+                    } else {
+                        pw.setNumber(phone.getNumber());
+                    }
+                });
+                if (pw.getNumber() != null) {
+                    throw new NotFoundException("Phone number: '"+pw.getNumber()+"' is already in use by another person.");
+                }
+                
+                //Create list to avoid ConcurrentModificationException
+                if (p.getHobbies().size() > 0) {
+                   List<Hobby> hobbies = new ArrayList<Hobby>(p.getHobbies());
+                   hobbies.forEach(hobby -> p.removeHobby(hobby)); 
+                }
+                Hobby failHobby = new Hobby(); //Created a lambda does not allow to throw exception 
+                person.getHobbies().forEach(newHobby -> {
+                    Hobby hob = em.find(Hobby.class, newHobby.getName());
+                    if (hob == null) {
+                        failHobby.setName(newHobby.getName());
+                    } else {
+                        p.addHobbies(hob);
+                    } 
+                });
+                if (failHobby.getName() != null) {
+                    throw new NotFoundException("Hobby: '" + failHobby.getName() + "' does not exist in database.");
+                }
             }
-            Address a = em.find(Address.class, person.getAddress().getId());
+            //Phone entity
+            Address address = person.getAddress();
+            //address.removePerson(person);
+            p.setAddress(address);
+            
+            p.setFirstName(person.getFirstName());
+            p.setLastName(person.getLastName());
+            p.setEmail(person.getEmail());
+            //Address entity
+
+            //CityInfo entity
+            
+            //Hobby entity
             
             em.getTransaction().begin();
-            a.setStreet(person.getAddress().getStreet());
-            em.merge(person);
-            em.merge(a);
+            
+            person = em.merge(p);
+            //person.getHobbies().forEach(hobby -> em.merge(hobby));
+            //em.merge(a);
             em.getTransaction().commit();
             
         } catch(Exception e){
-            e.getMessage();
+            throw new NotFoundException(e.getMessage());
         }finally {
             em.close();
         }

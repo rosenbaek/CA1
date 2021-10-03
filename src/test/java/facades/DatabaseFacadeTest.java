@@ -107,6 +107,7 @@ public class DatabaseFacadeTest {
                 //Persists Hobbies and CityInfo as we dont execute script in test.
                 em.persist(hobby1);
                 em.persist(hobby2);
+                em.persist(hobby3);
                 em.persist(ci1);
                 em.persist(ci2);
                 
