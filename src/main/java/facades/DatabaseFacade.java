@@ -174,51 +174,35 @@ public class DatabaseFacade {
         EntityManager em = emf.createEntityManager();
         try {
             Person p = em.find(Person.class, person.getId());
-            int size = p.getPhones().size();
-            List<Phone> phones = new ArrayList<>();
-            phones.addAll(p.getPhones());
+            
             if (p != null) {
-                
-                
-//                try {
-//                    Address a = getAddress(person.getAddress());
-//                    p.setAddress(a);
-//                } catch (Exception e) {
-//                    //If by mistake sent id, then remove it to create a new entity
-//                    person.getAddress().setId(null);
-//                    p.setAddress(person.getAddress());
-//                }
-                //Create list to avoid ConcurrentModificationException
-                
-                if (size > 0) {
-                    
-                    phones.forEach(phone -> p.removePhone(phone));
-                }
-                Phone pw = new Phone(); //Created a lambda does not allow to throw exception 
+                //Makes sure the bidirectional relationship is updated correct
+                List<Phone> phones = new ArrayList<>(); //Create a temporary list to avoid ConcurrentModificationException
+                phones.addAll(p.getPhones()); //Copy content from the managed person fetched from db
+                phones.forEach(phone -> p.removePhone(phone)); //Clear the content from the managed persons phones
+                Phone failPhone = new Phone(); //Created as lambda does not allow to throw exception 
                 person.getPhones().forEach(newPhone -> {
                     Phone phone = getPhone(newPhone);
                     if (phone == null) {
-                        p.addPhone(newPhone);
+                        p.addPhone(newPhone); //Fill the failPhone to make sure to be able to throw exception when foreach is finished
                     } else if (phone.getPerson().getId() == p.getId()) {
                         p.addPhone(phone);
                     } else {
-                        pw.setNumber(phone.getNumber());
+                        failPhone.setNumber(phone.getNumber());
                     }
                 });
-                if (pw.getNumber() != null) {
-                    throw new NotFoundException("Phone number: '"+pw.getNumber()+"' is already in use by another person.");
+                if (failPhone.getNumber() != null) {
+                    throw new NotFoundException("Phone number: '"+failPhone.getNumber()+"' is already in use by another person.");
                 }
                 
-                //Create list to avoid ConcurrentModificationException
-                if (p.getHobbies().size() > 0) {
-                   List<Hobby> hobbies = new ArrayList<Hobby>(p.getHobbies());
-                   hobbies.forEach(hobby -> p.removeHobby(hobby)); 
-                }
+                //Makes sure the bidirectional relationship is updated correct
+                List<Hobby> hobbies = new ArrayList<Hobby>(p.getHobbies()); //Create a temporary list to avoid ConcurrentModificationException
+                hobbies.forEach(hobby -> p.removeHobby(hobby)); //Clear the content from the managed persons hobbies
                 Hobby failHobby = new Hobby(); //Created a lambda does not allow to throw exception 
                 person.getHobbies().forEach(newHobby -> {
                     Hobby hob = em.find(Hobby.class, newHobby.getName());
                     if (hob == null) {
-                        failHobby.setName(newHobby.getName());
+                        failHobby.setName(newHobby.getName()); //Fill the failHobby to make sure to be able to throw exception when foreach is finished
                     } else {
                         p.addHobbies(hob);
                     } 
@@ -226,28 +210,18 @@ public class DatabaseFacade {
                 if (failHobby.getName() != null) {
                     throw new NotFoundException("Hobby: '" + failHobby.getName() + "' does not exist in database.");
                 }
-            }
-            //Phone entity
-            Address address = person.getAddress();
-            //address.removePerson(person);
-            p.setAddress(address);
-            
-            p.setFirstName(person.getFirstName());
-            p.setLastName(person.getLastName());
-            p.setEmail(person.getEmail());
-            //Address entity
+                Address address = person.getAddress();
+                p.setAddress(address);
+                p.setFirstName(person.getFirstName());
+                p.setLastName(person.getLastName());
+                p.setEmail(person.getEmail());
 
-            //CityInfo entity
-            
-            //Hobby entity
-            
-            em.getTransaction().begin();
-            
-            person = em.merge(p);
-            //person.getHobbies().forEach(hobby -> em.merge(hobby));
-            //em.merge(a);
-            em.getTransaction().commit();
-            
+                em.getTransaction().begin();
+                person = em.merge(p);
+                em.getTransaction().commit();
+            } else {
+                throw new NotFoundException("No person found with this id: "+person.getId());
+            }
         } catch(Exception e){
             throw new NotFoundException(e.getMessage());
         }finally {

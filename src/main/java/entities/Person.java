@@ -47,7 +47,7 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Phone> phones;
     
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Address address;
 
     public Person() {
@@ -164,6 +164,9 @@ public class Person implements Serializable {
             return false;
         }
        
+        //Hobby phone and address removed beacause when editing these attributes the bidirectional relationship
+        //can be out of sync on one side, and the this can couse that more persons with the same id can be added to
+        //these attributes, this will cause the server to fail.
         return true;
     }
 
