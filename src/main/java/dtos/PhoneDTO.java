@@ -15,8 +15,8 @@ import java.util.List;
  * @author christianrosenbaek
  */
 public class PhoneDTO {
-    private String number;
     private int id;
+    private String number;
     private String description;
 
     public PhoneDTO(Phone phone) {
