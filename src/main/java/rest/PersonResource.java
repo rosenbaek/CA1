@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dtos.CityInfoDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import entities.Hobby;
 
 
 import errorhandling.NotFoundException;
@@ -188,6 +190,20 @@ public class PersonResource {
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = CityInfoDTO.class)))})
     public Response getAllZips() {
         return Response.ok(gson.toJson(facade.getAllCityInfos()), MediaType.APPLICATION_JSON).build();
+    }
+    
+    
+    
+    @Path("/hobbyList")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(summary = "Get all hobbies",
+            tags = {"person"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = HobbyDTO.class)))})
+    public Response getAllHobbies() {
+        return Response.ok(gson.toJson(facade.getAllHobbies()), MediaType.APPLICATION_JSON).build();
     }
     
 

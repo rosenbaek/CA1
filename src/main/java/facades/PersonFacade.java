@@ -8,6 +8,7 @@ package facades;
 import com.google.gson.JsonObject;
 import dtos.CityInfoDTO;
 import dtos.CityInfosDTO;
+import dtos.HobbiesDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
@@ -65,6 +66,10 @@ public class PersonFacade {
     
     public CityInfosDTO getAllCityInfos(){
         return new CityInfosDTO(dbFacade.getAllCityInfos());
+    }
+    
+    public HobbiesDTO getAllHobbies(){
+        return new HobbiesDTO(dbFacade.getAllHobbies());
     }
     
     public PersonDTO addPerson(PersonDTO personDTO) throws NotFoundException{

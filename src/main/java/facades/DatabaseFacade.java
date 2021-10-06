@@ -300,5 +300,19 @@ public class DatabaseFacade {
             em.close();
         }
     }
+    
+    public List<Hobby> getAllHobbies(){
+        EntityManager em = emf.createEntityManager();
+        List<Hobby> hobbies;
+        try{
+            TypedQuery<Hobby> query = em.createQuery("SELECT h from Hobby h", Hobby.class);
+            hobbies = query.getResultList(); 
+            return hobbies;
+        } finally{
+            em.close();
+        }
+    }
+    
+    
 
 }
