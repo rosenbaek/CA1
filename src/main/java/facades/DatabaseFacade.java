@@ -97,6 +97,10 @@ public class DatabaseFacade {
             } catch (Exception e) {
             }
             
+            person.getPhones().forEach(x->{
+                x.setPerson(person);
+            });
+            
             
             em.persist(person);
             if (person.getHobbies().size() > 0) {
