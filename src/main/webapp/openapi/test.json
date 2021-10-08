@@ -1,0 +1,430 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Christian og Mikkels API",
+        "description": "CA1 projekt",
+        "version": "0.1"
+    },
+    "servers": [{
+            "url": "http://localhost:8080/dat3-startcode",
+            "description": "For Local host testing",
+            "variables": {}
+        }, {
+            "url": "https://itpiloten.dk",
+            "description": "Server API",
+            "variables": {}
+        }],
+    "tags": [{
+            "name": "person",
+            "description": "Endpoints for person"
+        }],
+    "paths": {
+        "/api/application.wadl": {
+            "get": {
+                "operationId": "getWadl",
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/vnd.sun.wadl+xml": {},
+                            "application/xml": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application.wadl/{path}": {
+            "get": {
+                "operationId": "getExternalGrammar",
+                "parameters": [{
+                        "name": "path",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/xml": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/person/hobbyList": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get all hobbies",
+                "operationId": "getAllHobbies",
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HobbyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/person": {
+            "get": {
+                "operationId": "getServerIsUp",
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/person/{id}": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get person by id",
+                "operationId": "getPersonByPhoneNumber",
+                "parameters": [{
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/byPhoneNumber/{phoneNumber}": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get person by phonenumber",
+                "operationId": "getPersonByPhoneNumber_1",
+                "parameters": [{
+                        "name": "phoneNumber",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/addperson": {
+            "post": {
+                "tags": ["person"],
+                "summary": "Add person",
+                "operationId": "addPerson",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/editperson": {
+            "put": {
+                "tags": ["person"],
+                "summary": "Edit person",
+                "operationId": "editPerson",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/byHobby/{hobby}": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get person by hobby",
+                "operationId": "getPersonsByHobby",
+                "parameters": [{
+                        "name": "hobby",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/byZip/{zip}": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get person by zipcode",
+                "operationId": "getPersonsInZip",
+                "parameters": [{
+                        "name": "zip",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PersonDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The Requested Person"
+                    },
+                    "400": {
+                        "description": "Entity not found"
+                    }
+                }
+            }
+        },
+        "/api/person/hobbyCount/{hobby}": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get number of persons by hobby",
+                "operationId": "getPersonsCountByHobby",
+                "parameters": [{
+                        "name": "hobby",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/person/zipList": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get all zipcodes",
+                "operationId": "getAllZips",
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CityInfoDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HobbyDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "wikiLink": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AddressDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "additionalInfo": {
+                        "type": "string"
+                    },
+                    "zipCode": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PersonDTO": {
+                "required": ["email", "firstName", "lastName"],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 2
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "test@test.dk"
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "example": "Chris"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "example": "Larsen"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/AddressDTO"
+                    },
+                    "phones": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PhoneDTO"
+                        }
+                    },
+                    "hobbies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HobbyDTO"
+                        }
+                    }
+                }
+            },
+            "PhoneDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "number": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CityInfoDTO": {
+                "type": "object",
+                "properties": {
+                    "zipCode": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
