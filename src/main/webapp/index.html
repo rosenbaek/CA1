@@ -1,61 +1,80 @@
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    
+    <title>CA1 Backend</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    body,h1 {font-family: "Raleway", Arial, sans-serif}
+    h1 {letter-spacing: 6px}
+    .w3-row-padding img {margin-bottom: 12px}
+    </style>
     <body>
-        <a href="api/openapi.json">API-Documentation</a><br/>
-        <a href="openapi">Interactive documentation</a>
-        <h1>CA1 API Description</h1><br>
-        <table class="tg">
-            <thead>
-                <tr>
-                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Method</span></th>
-                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">URL</span></th>
-                    <th class="tg-0lax"><span style="font-weight:bold">Request Body (JSON)</span></th>
-                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Response (JSON)</span></th>
-                    <th class="tg-0lax"><span style="font-weight:700;font-style:normal;text-decoration:none">Error (e)</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GET</span>	</td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users</span></td>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">[user, user, ...](1)</span></td>
-                    <td class="tg-0lax"></td>
-                </tr>
-                <tr>
-                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GET</span>	</td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users/{id}   </span><br><span style="font-weight:400;font-style:italic;text-decoration:none;color:#000;background-color:transparent">Id: A user ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">            </span></td>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">user (1)</span></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">(e1)</span></td>
-                </tr>
-                <tr>
-                    <td class="tg-1wig"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">POST</span></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">/api/users</span></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">user(1) without id</span></td>
-                    <td class="tg-0lax"></td>
-                    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">(e2)</span></td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <h2>Request Body and Response Formats</h2>
-        <p>(1) User format (don’t provide ID, for POST)</p>
-        
-        <div class="jsonDiv">
-            <p>{</p>
-            <p> &emsp; "age": Number,</p>
-            <p> &emsp; "name": String,</p>
-            <p> &emsp; "gender": String [“male” | “Female”],</p>
-            <p> &emsp; "email": String (email)</p>
-            <p>}</p>
+
+        <!-- !PAGE CONTENT! -->
+        <div class="w3-content" style="max-width:1500px">
+
+            <!-- Header -->
+            <header class="w3-panel w3-center w3-opacity" style="padding:37vh 16px">
+                <h1 class="w3-xlarge">CA1 Backend</h1>
+                <h1>Mikkel & Christian</h1>
+
+                <div class="w3-padding-32">
+                    <div class="w3-bar w3-border">
+                        <a href="openapi" class="w3-bar-item w3-button">Interactive documentation</a>
+                    </div>
+                </div>
+            </header>
+
+       
+            <div class="w3-row-padding w3-grayscale" style="margin-bottom:128px">
+                <h4>Entity Class Diagram</h4>
+                <div class="w3-half">
+
+                    <img src="images/entity_class_diagram.png" style="width:100%"/>
+
+                </div>
+
+            </div>
+           
+            
+                
+            <div class="w3-column-padding" style="flex-direction:row; display: flex" >
+                <div style="width: 50%; padding: 20px;">
+                         <h4>Kanban inden phase 1</h4>
+                        <img src="images/kanban1.png" style="width:100%"/>
+                    </div>
+                    <div style="width: 50%; padding: 20px;">
+                        <h4>KanBan inden start af phase 2</h4>
+                        <img src="images/kanban3.png" style="width:100%"/>
+                    </div>
+                    
+            </div>
+                
+            <div class="w3-column-padding" style="flex-direction:row; display: flex">
+                    <div style="width: 50%; padding: 20px;">
+                        <h4>Kanban Friday 01-10-21</h4>       
+                        <img src="images/kanban2.png" style="width:100%"/>
+                    </div>
+                    <div style="width: 50%; padding: 20px;">
+                        <h4>KanBan 06-10-21</h4>
+                        <img src="images/kanban4.png" style="width:100%"/>
+                    </div>
+                    
+            </div>
+           
+
+            <!-- End Page Content -->
         </div>
+
+        <!-- Footer -->
+        <footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-large"> 
+  
+        </footer>
 
     </body>
 </html>
+
