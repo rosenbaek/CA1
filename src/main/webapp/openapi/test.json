@@ -6,11 +6,11 @@
         "version": "0.1"
     },
     "servers": [{
-            "url": "http://localhost:8080/dat3-startcode",
+            "url": "http://localhost:8080/ca1",
             "description": "For Local host testing",
             "variables": {}
         }, {
-            "url": "https://itpiloten.dk",
+            "url": "https://itpiloten.dk/ca1",
             "description": "Server API",
             "variables": {}
         }],
@@ -54,24 +54,6 @@
                 }
             }
         },
-        "/api/person/hobbyList": {
-            "get": {
-                "tags": ["person"],
-                "summary": "Get all hobbies",
-                "operationId": "getAllHobbies",
-                "responses": {
-                    "default": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HobbyDTO"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/person": {
             "get": {
                 "operationId": "getServerIsUp",
@@ -85,18 +67,17 @@
                 }
             }
         },
-        "/api/person/{id}": {
+        "/api/person/byPhoneNumber/{phoneNumber}": {
             "get": {
                 "tags": ["person"],
-                "summary": "Get person by id",
+                "summary": "Get person by phonenumber",
                 "operationId": "getPersonByPhoneNumber",
                 "parameters": [{
-                        "name": "id",
+                        "name": "phoneNumber",
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "format": "int32"
+                            "type": "string"
                         }
                     }],
                 "responses": {
@@ -118,17 +99,18 @@
                 }
             }
         },
-        "/api/person/byPhoneNumber/{phoneNumber}": {
+        "/api/person/{id}": {
             "get": {
                 "tags": ["person"],
-                "summary": "Get person by phonenumber",
+                "summary": "Get person by id",
                 "operationId": "getPersonByPhoneNumber_1",
                 "parameters": [{
-                        "name": "phoneNumber",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int32"
                         }
                     }],
                 "responses": {
@@ -319,27 +301,28 @@
                     }
                 }
             }
+        },
+        "/api/person/hobbyList": {
+            "get": {
+                "tags": ["person"],
+                "summary": "Get all hobbies",
+                "operationId": "getAllHobbies",
+                "responses": {
+                    "default": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HobbyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "HobbyDTO": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "wikiLink": {
-                        "type": "string"
-                    },
-                    "category": {
-                        "type": "string"
-                    },
-                    "type": {
-                        "type": "string"
-                    }
-                }
-            },
             "AddressDTO": {
                 "type": "object",
                 "properties": {
@@ -357,6 +340,23 @@
                         "type": "string"
                     },
                     "city": {
+                        "type": "string"
+                    }
+                }
+            },
+            "HobbyDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "wikiLink": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "type": {
                         "type": "string"
                     }
                 }

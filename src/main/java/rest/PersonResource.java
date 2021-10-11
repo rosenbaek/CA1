@@ -52,11 +52,11 @@ import javax.ws.rs.core.Response;
         servers = {
             @Server(
                     description = "For Local host testing",
-                    url = "http://localhost:8080/dat3-startcode"
+                    url = "http://localhost:8080/ca1"
             ),
             @Server(
                     description = "Server API",
-                    url = "https://itpiloten.dk"
+                    url = "https://itpiloten.dk/ca1"
             )
         }
 )
